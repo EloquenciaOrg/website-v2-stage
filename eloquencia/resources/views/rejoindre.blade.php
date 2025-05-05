@@ -44,7 +44,7 @@
           <li class="nav-item"><a class="nav-link" href="{{ url('/reduction') }}">Réduction</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url('/#contact') }}">Contact</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url('/propos') }}">A propos</a></li>
-          <li class="nav-item"><a class="nav-link" href="">Connexion</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url('/login') }}">Connexion</a></li>
         </ul>
       </div>
     </div>

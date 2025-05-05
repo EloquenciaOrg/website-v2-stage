@@ -63,7 +63,7 @@
           <li class="nav-item"><a class="nav-link" href="{{ url('/reduction') }}">Réduction</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url('/#contact') }}">Contact</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url('/propos') }}">A propos</a></li>
-          <li class="nav-item"><a class="nav-link" href="">Connexion</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url('/login') }}">Connexion</a></li>
         </ul>
       </div>
     </div>
@@ -83,7 +83,7 @@
     <h1 class="fw-bold fs-1 padding-top bg-light">Eloquéncia</h1>
     <p class="lead bg-light">La plateforme de cours en ligne pour apprendre à parler en public</p>
     <a href="https://www.helloasso.com/associations/eloquencia/adhesions/adhesion" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#helloassoModal">Adhérer</a>
-    <a href="" class="btn btn-sm btn-warning">Connexion</a>
+    <a href="{{ url('/login') }}" class="btn btn-sm btn-warning">Connexion</a>
   </div>
 
   <!-- CAROUSEL -->
@@ -197,18 +197,19 @@
   <section class="py-5 bg-light" id="contact">
     <div class="container">
       <h2 class="text-center mb-4 fw-bold">Contactez-nous</h2>
-      <form class="p-4 shadow bg-warning rounded mx-auto" style="max-width: 700px;">
+      <form method="POST" action="/envoie_mess" class="p-4 shadow bg-warning rounded mx-auto" style="max-width: 700px;">
+      @csrf <!-- PROTECTION CSRF -->
         <div class="mb-3">
           <label for="name" class="form-label">Nom</label>
-          <input type="text" class="form-control" id="name" placeholder="Votre nom" required>
+          <input type="text" class="form-control" id="name" name="name" placeholder="Votre nom" required>
         </div>
         <div class="mb-3">
           <label for="email" class="form-label">Adresse email</label>
-          <input type="email" class="form-control" id="email" placeholder="Votre email" required>
+          <input type="email" class="form-control" id="email" name="email" placeholder="Votre email" required>
         </div>
         <div class="mb-3">
           <label for="message" class="form-label">Message</label>
-          <textarea class="form-control" id="message" rows="4" placeholder="Votre message..." required></textarea>
+          <textarea class="form-control" id="message" name="message" rows="4" placeholder="Votre message..." required></textarea>
         </div>
         <div class="text-center">
           <button type="submit" class="btn btn-light px-4">Envoyer</button>
