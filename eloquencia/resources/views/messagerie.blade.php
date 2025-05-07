@@ -56,12 +56,29 @@
                             {{ $msg->message }}
                         </p>
                         <a href="mailto:{{ $msg->email }}" class="btn btn-sm btn-outline-warning">Répondre</a>
-                        <form method="POST" action="{{ route('messagerie.delete') }}" class="d-inline">
-                          @csrf
-                          @method('DELETE')
-                          <input type="hidden" name="id" value="{{ $msg->ID }}">
-                          <button type="submit" class="btn btn-sm btn-outline-danger">Supprimer</button>
-                        </form>
+                        <!-- Modal de confirmation -->
+                        <button type="submit" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Supprimer</button>
+                        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModal" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="confirmResetModalLabel">Confirmer l'action</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                              </div>
+                              <div class="modal-body">Êtes-vous sûr de vouloir supprimer le message ?</div>
+                              <div class="modal-footer">
+                                <form method="POST" action="{{ route('messagerie.delete') }}">
+                                  @csrf
+                                  @method('DELETE')
+                                  <input type="hidden" name="id" value="{{ $msg->ID }}">
+                                    <button type="submit" class="btn btn-warning">Oui, envoyer</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
                     </div>
                     <div class="card-footer bg-transparent border-top-0 text-end text-muted small">
                         🕒 {{ \Carbon\Carbon::parse($msg->datetime)->format('d/m/Y H:i') }}
@@ -75,6 +92,9 @@
         @endforelse
     </div>
 </div>
+
+
+
 
   <footer class="bg-light text-center py-3">
   <div class="container">

@@ -74,21 +74,32 @@
     <div class="mx-auto" style="max-width: 700px;">
       <h2 class="text-center fw-bold mb-2">Demander une réduction</h2>
       <p class="text-center text-muted mb-4">Vous êtes étudiant(e) ou mineur(e) ? Envoyez une demande ici.</p>
+      @if(session('success'))
+          <div class="alert alert-success">
+              {{ session('success') }}
+          </div>
+      @endif
+      @if(session('error'))
+          <div class="alert alert-danger">
+              {{ session('error') }}
+          </div>
+      @endif
 
-      <form class="bg-white shadow rounded p-4">
+      <form class="bg-white shadow rounded p-4" action="/demande_reduction" method="POST" enctype="multipart/form-data">
+      @csrf
         <div class="mb-3">
           <label for="name" class="form-label">Nom complet</label>
-          <input type="text" class="form-control" id="name" placeholder="Jean Dupont" required>
+          <input type="text" class="form-control" id="name" name="name" placeholder="Jean Dupont" required>
         </div>
 
         <div class="mb-3">
           <label for="email" class="form-label">Adresse mail</label>
-          <input type="email" class="form-control" id="email" placeholder="email@example.com" required>
+          <input type="email" class="form-control" id="email" name="email" placeholder="email@example.com" required>
         </div>
 
         <div class="mb-3">
           <label for="file" class="form-label">Justificatif (PDF, JPG, PNG)</label>
-          <input class="form-control" type="file" id="file" accept=".jpg,.jpeg,.png,.pdf" required>
+          <input class="form-control" type="file" id="file" name="file" accept=".jpg,.jpeg,.png,.pdf" required>
         </div>
 
         <p class="text-muted small mt-3">
@@ -101,6 +112,8 @@
       </form>
     </div>
   </div>
+  
+
   </section>
 
   <footer class="bg-light text-center py-3">

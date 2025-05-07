@@ -37,10 +37,6 @@
     </div>
   </nav>
 
-  @error('password')
-    <div class="alert alert-danger">{{ $message }}</div>
-@enderror
-
   <div class="container mt-4">
     <h1 class="mb-4 fw-bold text-center">Liste des administrateurs</h1>
 
@@ -54,6 +50,14 @@
                 </tr>
             </thead>
             <tbody>
+            @error('password')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
             @foreach($admins as $admin)
             <tr>
                 <td>{{ $admin->ID }}</td>

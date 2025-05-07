@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\AdminsController;
 use App\Http\Controllers\MessagerieController;
+use App\Http\Controllers\ReductionController;
 
 
 // ROUTES VERS LES VUES
@@ -40,8 +41,8 @@ Route::get('/lecons', function () {
     return view('lecons');
 });
 
-Route::get('/remises', function () {
-    return view('remises');
+Route::get('/gestion_reduction', function () {
+    return view('gestion_reduction');
 });
 
 Route::get('/messagerie', function () {
@@ -76,4 +77,10 @@ Route::put('/member_update_password', [MemberController::class, 'updatePassword'
 Route::get('/messagerie', [MessagerieController::class, 'index'])->name('filter');
 Route::post('/envoie_mess', [MessagerieController::class, 'store']);
 Route::delete('/supp_mess', [MessagerieController::class, 'supp'])->name('messagerie.delete');
+
+Route::get('/gestion_reduction', [ReductionController::class, 'index']);
+Route::post('/demande_reduction', [ReductionController::class, 'demande_reduction']);
+Route::post('/reduction_accepte', [ReductionController::class, 'reduction_accepte']);
+Route::post('/reduction_refuse', [ReductionController::class, 'reduction_refuse']);
+Route::get('/download-proof/{id}', [ReductionController::class, 'downloadProof'])->name('download.proof');
 

@@ -8,6 +8,8 @@
 
   <!-- Bootstrap CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 
 </head>
 <body class="pt-5 bg-light">
@@ -38,7 +40,7 @@
     </div>
   </nav>
 
-  <div class="container mt-4">
+  <div class="container mt-4 text-center">
     <h1 class="mb-4 fw-bold text-center">Liste des membres</h1>
 
     <div class="table-responsive">
@@ -64,7 +66,8 @@
                         <td>{{ $member->registrationDate }}</td>
                         <td>{{ $member->expirationDate }}</td>
                         <td>
-                          <button class="btn btn-sm btn-warning me-1" data-bs-toggle="modal" data-bs-target="#confirmResetModal">Reset du mot de passe</button>
+                        <div class="d-flex justify-content-center gap-1">
+                          <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#confirmResetModal"><img src="{{ asset('images/icon_mdp.png') }}" alt="Reset" width="22" height="22"></button>
                           <!-- Modal de confirmation -->
                           <div class="modal fade" id="confirmResetModal" tabindex="-1" aria-labelledby="confirmResetModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -80,17 +83,15 @@
                                   <form method="POST" action="/reset_password">
                                     @csrf
                                     <input type="hidden" name="ID" value="{{ $member->ID }}">
-                                    <div class="modal-footer">
                                         <button type="submit" class="btn btn-warning">Oui, envoyer</button>
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                                    </div>
                                   </form>
                                 </div>
                               </div>
                             </div>
                           </div>
 
-                          <button class="btn btn-sm btn-warning mt-1" data-bs-toggle="modal" data-bs-target="#editEmailModal{{ $member->ID }}">Changement d'adresse email</button>
+                          <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editEmailModal{{ $member->ID }}"><img src="{{ asset('images/icon_email.png') }}" alt="Reset" width="22" height="22"></button>
                           <!-- Modal -->
                           <div class="modal fade" id="editEmailModal{{ $member->ID }}" tabindex="-1" aria-labelledby="editEmailModalLabel" aria-hidden="true">
                               <div class="modal-dialog">
@@ -121,7 +122,7 @@
                                   </form>
                               </div>
                           </div>
-                          
+                        </div>
                         </td>
                     </tr>
                 @endforeach

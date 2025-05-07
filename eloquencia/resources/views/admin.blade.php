@@ -96,7 +96,7 @@
                 <img src="https://img.icons8.com/fluency/48/discount.png" alt="Remises" class="mb-3" width="48">
                 <h5 class="card-title fw-bold">Remises</h5>
                 <p class="card-text text-muted">Accéder aux demandes de réduction</p>
-                <a href="{{ url('/remises') }}" class="btn btn-warning">Accéder</a>
+                <a href="{{ url('/gestion_reduction') }}" class="btn btn-warning">Accéder</a>
             </div>
         </div>
     </div>
@@ -157,7 +157,7 @@
   <footer class="bg-light text-center py-3">
   <div class="container">
     <small class="text-muted">
-      © 2024 <strong>Eloquência</strong> | Fait avec <span style="color: #e25555;">💙</span> et hébergé à Marseille
+      © 2025 <strong>Eloquéncia</strong> | Fait avec 💙 et hébergé à Marseille
     </small>
   </div>
   </footer>
