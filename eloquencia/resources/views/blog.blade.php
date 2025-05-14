@@ -9,36 +9,7 @@
   <!-- Bootstrap CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <style>
-    .ville-img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 10px;
-    }
 
-    .card-ville {
-      overflow: hidden;
-      border: none;
-    }
-
-    .navbar-brand img {
-      border-radius: 50%;
-    }
-
-    .highlight-bar {
-      overflow: hidden;
-      white-space: nowrap;
-      animation: scroll 12s linear infinite;
-      font-weight: bold;
-      font-size: 1.1rem;
-    }
-
-    @keyframes scroll {
-      0%   { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
-  </style>
 </head>
 <body class="pt-5 bg-light">
 
@@ -68,71 +39,26 @@
     </div>
   </nav>
 
-  <!-- BANNIÈRE DÉFILANTE -->
-   
-  <div class="mt-3 bg-light">
-    <div class="highlight-bar text-center">
-      🎤 Prochain événement : Tournoi d’éloquence – inscriptions ouvertes jusqu’au 30 avril 2025 !
-    </div>
-  </div>
-
 
   <!-- BLOG -->
   <div class="container" id="blog">
-    <h2 class="text-center fw-bold mb-5">Blog :</h2>
+    <h2 class="text-center fw-bold mb-5 mt-5">Blog :</h2>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
       
-      <!-- Article 1 -->
-      <div class="col">
-        <a href="/blog/article-1" class="text-decoration-none text-dark">
-          <div class="card h-100 shadow border-0">
-            <img src="{{ asset('images/article1.jpg') }}" class="card-img-top" style="height: 180px; object-fit: cover; border-radius: 10px 10px 0 0;">
-            <div class="card-body text-center">
-              <h5 class="fw-bold">Titre de l’article</h5>
-              <p class="text-muted">Petit résumé de l’article pour donner envie de cliquer.</p>
-            </div>
+      @foreach ($blogs as $blog)
+          <div class="col">
+              <a href="{{ $blog->link ?? '#' }}" class="text-decoration-none text-dark">
+                  <div class="card h-100 shadow border-0">
+                      <img src="{{ asset($blog->image) }}" class="card-img-top"
+                          style="height: 180px; object-fit: cover; border-radius: 10px 10px 0 0;">
+                      <div class="card-body text-center">
+                          <h5 class="fw-bold">{{ $blog->title }}</h5>
+                          <p class="text-muted">{{ $blog->description }}</p>
+                      </div>
+                  </div>
+              </a>
           </div>
-        </a>
-      </div>
-
-      <!-- Article 2 -->
-      <div class="col">
-        <a href="/blog/article-2" class="text-decoration-none text-dark">
-          <div class="card h-100 shadow border-0">
-            <img src="{{ asset('images/article2.jpg') }}" class="card-img-top" style="height: 180px; object-fit: cover; border-radius: 10px 10px 0 0;">
-            <div class="card-body text-center">
-              <h5 class="fw-bold">2eme article</h5>
-              <p class="text-muted">Petit résumé de l’article pour donner envie de cliquer.</p>
-            </div>
-          </div>
-        </a>
-      </div>
-
-      <!-- Article 3 -->
-      <div class="col">
-        <a href="/blog/article-2" class="text-decoration-none text-dark">
-          <div class="card h-100 shadow border-0">
-            <img src="{{ asset('images/article2.jpg') }}" class="card-img-top" style="height: 180px; object-fit: cover; border-radius: 10px 10px 0 0;">
-            <div class="card-body text-center">
-              <h5 class="fw-bold">3eme article</h5>
-              <p class="text-muted">Petit résumé de l’article pour donner envie de cliquer.</p>
-            </div>
-          </div>
-        </a>
-      </div>
-
-      <!-- Article 4 -->
-      <div class="col">
-        <a href="/blog/article-2" class="text-decoration-none text-dark">
-          <div class="card h-100 shadow border-0">
-            <img src="{{ asset('images/article2.jpg') }}" class="card-img-top" style="height: 180px; object-fit: cover; border-radius: 10px 10px 0 0;">
-            <div class="card-body text-center">
-              <h5 class="fw-bold">4eme article</h5>
-              <p class="text-muted">Petit résumé de l’article pour donner envie de cliquer.</p>
-            </div>
-          </div>
-        </a>
-      </div>
+      @endforeach  
 
     </div>
   </div>

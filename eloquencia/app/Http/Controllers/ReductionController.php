@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Reduction;
+use App\Models\Code;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AcceptReductionMail;
 use App\Mail\DenyReductionMail;
@@ -67,7 +68,14 @@ class ReductionController extends Controller
         $demandeur->state = 1;
         $demandeur->save();
 
-        Mail::to($demandeur->email)->send(new AcceptReductionMail($demandeur));
+        $code = Code::whereNull('email')->first();
+        if (!$code) {
+            return back()->with('error', 'Aucun code disponible.');
+        }
+        $code->email = $demandeur->email;
+        $code->save();
+
+        Mail::to($demandeur->email)->send(new AcceptReductionMail($demandeur, $code));
 
         return back()->with('success', 'Email de validation de reduction envoyé.');
     }

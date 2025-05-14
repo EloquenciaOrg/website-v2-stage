@@ -67,7 +67,7 @@
                         <td>{{ $member->expirationDate }}</td>
                         <td>
                         <div class="d-flex justify-content-center gap-1">
-                          <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#confirmResetModal"><img src="{{ asset('images/icon_mdp.png') }}" alt="Reset" width="22" height="22"></button>
+                          <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#confirmResetModal" title="Réinitialisation du mot de passe"><img src="{{ asset('images/icon_mdp.png') }}" alt="Reset" width="22" height="22"></button>
                           <!-- Modal de confirmation -->
                           <div class="modal fade" id="confirmResetModal" tabindex="-1" aria-labelledby="confirmResetModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -91,7 +91,7 @@
                             </div>
                           </div>
 
-                          <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editEmailModal{{ $member->ID }}"><img src="{{ asset('images/icon_email.png') }}" alt="Reset" width="22" height="22"></button>
+                          <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editEmailModal{{ $member->ID }}" title="Réinitialisation de l'adresse email"><img src="{{ asset('images/icon_email.png') }}" alt="Reset" width="22" height="22"></button>
                           <!-- Modal -->
                           <div class="modal fade" id="editEmailModal{{ $member->ID }}" tabindex="-1" aria-labelledby="editEmailModalLabel" aria-hidden="true">
                               <div class="modal-dialog">

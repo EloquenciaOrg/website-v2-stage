@@ -58,7 +58,7 @@
             <p>Voici votre code de réduction personnel :</p>
 
             <div style="text-align: center;">
-                <span class="code-box">123456789</span> <!--{{ $reduction->code }}-->
+                <span class="code-box">{{ $code->code }}</span>
             </div>
 
             <p>Utilisez ce code lors de votre inscription pour bénéficier de la réduction.</p>

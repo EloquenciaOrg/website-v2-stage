@@ -71,14 +71,16 @@
 
   <!-- BANNIÈRE DÉFILANTE -->
    
-  <div class="mt-3 bg-light">
-    <div class="highlight-bar text-center">
-      🎤 Prochain événement : Tournoi d’éloquence – inscriptions ouvertes jusqu’au 30 avril 2025 !
+  @if($setting)
+    <div class="mt-3 bg-light">
+      <div class="highlight-bar text-center">
+        {!! $setting->content !!}
+      </div>
     </div>
-  </div>
+  @endif
 
   <!-- TITRE -->
-  <div class="bg-light text-center">
+  <div class="bg-light text-center mt-3">
     <!-- <img src="{{ asset('images/logo.png') }}" alt="logo" style="width: 120px; height: 120px;"> -->
     <h1 class="fw-bold fs-1 padding-top bg-light">Eloquéncia</h1>
     <p class="lead bg-light">La plateforme de cours en ligne pour apprendre à parler en public</p>
@@ -113,40 +115,26 @@
   <div class="container py-5">
     <h2 class="text-center mb-4 fw-bold">Article à la une :</h2>
         <div class="row g-4">
-          <div class="col-md-4">
-            <div class="card h-100 shadow">
-              <img src="{{ asset('images/article1.jpg') }}" class="card-img-top" alt="..." style="height: 400px;">
-              <div class="card-body text-center">
-                <h5 class="card-title">Kerry James est dans la place</h5>
-                <p class="card-text">C'est le début de son 1v1 contre Sukuna</p>
-                <a href="#" class="btn btn-outline-warning">Lire plus</a>
+          @foreach($articles as $article)
+            @php
+              $data = json_decode($article->value);
+            @endphp
+
+            <div class="col-md-4">
+              <div class="card h-100 shadow">
+                <img src="{{ asset($data->image) }}" class="card-img-top" alt="..." style="height: 400px;">
+                <div class="card-body text-center">
+                  <h5 class="card-title">{{ $data->title }}</h5>
+                  <p class="card-text">{{ $data->description }}</p>
+                  <a href="{{ $data->link }}" class="btn btn-outline-warning">Lire plus</a>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card h-100 shadow">
-              <img src="{{ asset('images/article2.jpg') }}" class="card-img-top" alt="..." style="height: 400px;">
-              <div class="card-body text-center">
-                <h5 class="card-title">Concour d'éloquence</h5>
-                <p class="card-text">Les inscriptions sont ouvertes</p>
-                <a href="#" class="btn btn-outline-warning">Lire plus</a>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card h-100 shadow">
-              <img src="{{ asset('images/article3.jpg') }}" class="card-img-top" alt="..." style="height: 400px;">
-              <div class="card-body text-center">
-                <h5 class="card-title">La prestation de Titouan</h5>
-                <p class="card-text">Un membre de notre association a effectué une performance remarquable</p>
-                <a href="#" class="btn btn-outline-warning">Lire plus</a>
-              </div>
-            </div>
-          </div>
+          @endforeach
         </div>
         <!-- LIEN VERS BLOG -->
         <div class="text-center mt-4">
-        <a href="{{ url('/blog') }}" class="btn btn-outline-warning px-4 fw-bold">Voir tous les articles →</a>
+          <a href="{{ url('/blog') }}" class="btn btn-outline-warning px-4 fw-bold">Voir tous les articles →</a>
         </div>
   </div>
 
@@ -155,39 +143,27 @@
     <div class="container">
       <h2 class="text-center fw-bold mb-5">Nos Partenaires</h2>
         <div class="row g-4 justify-content-center">
-          <!-- Partenaire 1 -->
-          <div class="col-md-6 col-lg-4">
-              <div class="bg-white rounded shadow p-4 h-100 d-flex flex-column">
-                <div class="d-flex align-items-center mb-3">
-                  <img src="{{ asset('images/logo.png') }}" alt="Logo partenaire" class="me-3 rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
-                  <div>
-                    <h5 class="mb-0">Gojo</h5>
-                    <small class="text-muted">Depuis Janvier 2023</small>
+            @foreach ($partenaires as $data)
+              @php
+                $partenaire = json_decode($data->value);
+              @endphp
+              <div class="col-md-6 col-lg-4">
+                <div class="bg-white rounded shadow p-4 h-100 d-flex flex-column">
+                  <div class="d-flex align-items-center mb-3">
+                    <img src="{{ asset($partenaire->image) }}" alt="Logo partenaire" class="me-3 rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
+                    <div>
+                      <h5 class="mb-0">{{ $partenaire->nom }}</h5>
+                      <small class="text-muted">Depuis {{ $partenaire->depuis }}</small>
+                    </div>
                   </div>
+                  <p class="text-muted flex-grow-1">{{ $partenaire->description }}</p>
+                  @if(!empty($partenaire->link))
+                    <a href="{{ $partenaire->link }}" class="btn btn-sm btn-outline-warning mt-3 align-self-start" target="_blank">En savoir plus</a>
+                  @endif
                 </div>
-                <p class="text-muted flex-grow-1 ">
-                  Accompagnement des jeunes dans leurs projets éducatifs à travers des ateliers et des événements nationaux.
-                </p>
-                <a href="#" class="btn btn-sm btn-outline-warning mt-3 align-self-start">En savoir plus</a>
               </div>
-            </div>
-            <!-- Partenaire 2 -->
-            <div class="col-md-6 col-lg-4">
-              <div class="bg-white rounded shadow p-4 h-100 d-flex flex-column">
-                <div class="d-flex align-items-center mb-3">
-                  <img src="{{ asset('images/partenaire3.png') }}" alt="Logo partenaire" class="me-3 rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
-                  <div>
-                    <h5 class="mb-0">EVA</h5>
-                    <small class="text-muted">Depuis Octobre 2024</small>
-                  </div>
-                </div>
-                <p class="text-muted flex-grow-1">
-                EVA, entreprise fondée en 2018 à Vitrolles, allie réemploi informatique et inclusion des personnes en situation de handicap pour promouvoir une économie 
-                circulaire à impact environnemental et social positif.
-                </p>
-                <a href="https://evad3e.fr/?utm_source=eloquencia&utm_medium=referral" class="btn btn-sm btn-outline-warning mt-3 align-self-start">En savoir plus</a>
-              </div>
-            </div>
+            @endforeach
+
           </div>
         </div>
     </div>

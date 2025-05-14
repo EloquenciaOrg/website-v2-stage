@@ -17,9 +17,11 @@ class AcceptReductionMail extends Mailable
      * Create a new message instance.
      */
     public $reduction;
-    public function __construct($reduction)
+    public $code;
+    public function __construct($reduction, $code)
     {
         $this->reduction = $reduction;
+        $this->code = $code;
     }
 
     /**
@@ -39,7 +41,7 @@ class AcceptReductionMail extends Mailable
     {
         return new Content(
             view: 'emails.accept_reduction',
-            with: ['reduction' => $this->reduction]
+            with: ['reduction' => $this->reduction, 'code' => $this->code]
         );
     }
 

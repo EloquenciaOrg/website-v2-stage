@@ -206,3 +206,14 @@ INSERT INTO `tokens_admin` (`ID`, `token`, `user_id`, `expiration`) VALUES
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
+INSERT INTO `settings` (`name`, `value`, `state`) VALUES
+(
+  'article_a_la_une_3',
+  '{
+    "title": "Kerry James est dans la place",
+    "description": "C\'est le début de son 1v1 contre Sukuna",
+    "image": "images/article1.jpg",
+    "link": ""
+  }',
+  1
+);

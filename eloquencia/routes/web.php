@@ -5,6 +5,7 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\AdminsController;
 use App\Http\Controllers\MessagerieController;
 use App\Http\Controllers\ReductionController;
+use App\Http\Controllers\ParametreController;
 
 
 // ROUTES VERS LES VUES
@@ -58,7 +59,7 @@ Route::get('/members', function () {
 });
 
 Route::get('/parametre', function () {
-    return view('parammetre');
+    return view('parametre');
 });
 
 // ROUTES POUR LES CONTROLLEURS
@@ -83,4 +84,20 @@ Route::post('/demande_reduction', [ReductionController::class, 'demande_reductio
 Route::post('/reduction_accepte', [ReductionController::class, 'reduction_accepte']);
 Route::post('/reduction_refuse', [ReductionController::class, 'reduction_refuse']);
 Route::get('/download-proof/{id}', [ReductionController::class, 'downloadProof'])->name('download.proof');
+
+Route::get('/parametre', [ParametreController::class, 'index']);
+Route::put('/notif_desactiver', [ParametreController::class, 'desactiver']);
+Route::put('/notif_activer', [ParametreController::class, 'activer']);
+Route::put('/notif_update', [ParametreController::class, 'update']);
+Route::delete('/supprimer_article', [ParametreController::class, 'article_delete']);
+Route::post('/ajouter_article', [ParametreController::class, 'article_add']);
+Route::delete('/supprimer_blog_article', [ParametreController::class, 'article_blog_delete']);
+Route::post('/ajouter_blog_article', [ParametreController::class, 'article_blog_add']);
+Route::post('/ajouter_partenaire', [ParametreController::class, 'partenaire_add']);
+Route::delete('/supprimer_patenaire', [ParametreController::class, 'partenaire_delete']);
+
+Route::get('/', [ParametreController::class, 'index_welcome']);
+
+Route::get('/blog', [ParametreController::class, 'index_blog']);
+
 
