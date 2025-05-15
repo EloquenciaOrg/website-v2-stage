@@ -119,7 +119,7 @@
   <footer class="bg-light text-center py-3">
   <div class="container">
     <small class="text-muted">
-      © 2024 <strong>Eloquência</strong> | Fait avec <span style="color: #e25555;">❤</span> et hébergé à Marseille
+      © 2025 <strong>Eloquéncia</strong> | Fait avec 💙 et hébergé à Marseille | <a href="/mentions_legales">Mentions légales</a>
     </small>
   </div>
   </footer>

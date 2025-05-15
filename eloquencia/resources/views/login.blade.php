@@ -156,6 +156,15 @@ if (isset($_POST['forgotSubmit'])) {
         </div>
     </div>
 </div>
+
+<footer class="bg-light text-center py-3">
+  <div class="container">
+    <small class="text-muted">
+      © 2025 <strong>Eloquéncia</strong> | Fait avec 💙 et hébergé à Marseille | <a href="/mentions_legales">Mentions légales</a>
+    </small>
+  </div>
+  </footer>
+
 <script>
     document.getElementById('email').focus();
 </script>

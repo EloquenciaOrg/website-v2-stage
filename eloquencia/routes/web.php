@@ -58,6 +58,10 @@ Route::get('/members', function () {
     return view('members');
 });
 
+Route::get('/mentions_legales', function () {
+    return view('mentions_legales');
+});
+
 Route::get('/parametre', function () {
     return view('parametre');
 });
