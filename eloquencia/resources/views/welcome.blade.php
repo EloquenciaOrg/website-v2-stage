@@ -8,6 +8,8 @@
 
   <!-- Bootstrap CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Icons8 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
   <style>
     .ville-img {
@@ -63,7 +65,13 @@
           <li class="nav-item"><a class="nav-link" href="{{ url('/reduction') }}">Réduction</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url('/#contact') }}">Contact</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url('/propos') }}">A propos</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url('/login') }}">Connexion</a></li>
+          @guest('member')<li class="nav-item"><a class="nav-link" href="{{ url('/login') }}">Connexion</a></li>@endguest
+          @auth('member')
+          <form method="POST" action="{{ route('member.logout') }}">
+            @csrf
+            <button type="submit" class="btn nav-link">Déconnexion <i class="bi bi-box-arrow-right"></i></button>
+          </form>
+          @endauth
         </ul>
       </div>
     </div>
@@ -79,13 +87,20 @@
     </div>
   @endif
 
+  @if(session('error'))
+    <div class="alert alert-danger text-center">
+        {{ session('error') }}
+    </div>
+@endif
+
   <!-- TITRE -->
   <div class="bg-light text-center mt-3">
     <!-- <img src="{{ asset('images/logo.png') }}" alt="logo" style="width: 120px; height: 120px;"> -->
     <h1 class="fw-bold fs-1 padding-top bg-light">Eloquéncia</h1>
     <p class="lead bg-light">La plateforme de cours en ligne pour apprendre à parler en public</p>
     <a href="https://www.helloasso.com/associations/eloquencia/adhesions/adhesion" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#helloassoModal">Adhérer</a>
-    <a href="{{ url('/login') }}" class="btn btn-sm btn-warning">Connexion</a>
+    @guest('member')<a href="{{ url('/login') }}" class="btn btn-sm btn-warning">Connexion</a>@endguest
+    @auth('member')<a href="{{ url('/lms') }}" class="btn btn-sm btn-warning">Connexion</a>@endauth
   </div>
 
   <!-- CAROUSEL -->
@@ -157,7 +172,9 @@
                     </div>
                   </div>
                   <p class="text-muted flex-grow-1">{{ $partenaire->description }}</p>
-                  @if(!empty($partenaire->link))
+                  @if($partenaire->link == "https://www.burgerking.fr/")
+                    <a href="{{ $partenaire->link }}" class="btn btn-sm btn-outline-warning mt-3 align-self-start" target="_blank">Promis, c’est pas une pub pour McDo</a>
+                  @else
                     <a href="{{ $partenaire->link }}" class="btn btn-sm btn-outline-warning mt-3 align-self-start" target="_blank">En savoir plus</a>
                   @endif
                 </div>
@@ -186,6 +203,19 @@
         <div class="mb-3">
           <label for="message" class="form-label">Message</label>
           <textarea class="form-control" id="message" name="message" rows="4" placeholder="Votre message..." required></textarea>
+        </div>
+        <div class="mb-3 mt-3">
+          <label for="captcha" class="form-label">Captcha</label>
+          <div class="d-flex align-items-center gap-3 mb-2">
+            <img src="{{ route('captcha.image') }}" alt="captcha" id="captcha-img" style="height: 30px; width: 65px;">
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="document.getElementById('captcha-img').src='{{ route('captcha.image') }}?rand=' + Math.random();">
+              🔁
+            </button>
+          </div>
+          <input type="text" name="captcha" id="captcha" class="form-control" required>
+          @error('captcha')
+            <div class="invalid-feedback d-block">{{ $message }}</div>
+          @enderror
         </div>
         <div class="text-center">
           <button type="submit" class="btn btn-light px-4">Envoyer</button>

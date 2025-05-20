@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Hash;
+use App\Services\Captcha;
+use Illuminate\Support\Facades\Auth;
 
 
 
@@ -13,7 +15,7 @@ class AdminsController extends Controller
     public function index()
     {
         $admins = Admin::all();
-        return view('gestion_admins', compact('admins'));
+        return view('admin.gestion_admins', compact('admins'));
     }
 
     public function updatePassword(Request $request)
@@ -41,5 +43,44 @@ class AdminsController extends Controller
         $admin->save();
 
         return back()->with('success', 'Mot de passe mis à jour');
+    }
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|max:60',
+            'password' => 'required',
+            'captcha' => 'required'
+        ]);
+
+        $captcha = new Captcha();
+        if (!$captcha->checkCaptcha($request->input('captcha'))) {
+            return back()
+                ->withInput()
+                ->with('error', 'Captcha incorrect');
+        }
+
+        // Vérification des identifiants
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::guard('admin')->attempt($credentials)) {
+            $request->session()->regenerate(); // Sécurise la session
+            return redirect()->intended('/admin/admin');
+        }
+
+        // Sinon : mauvais identifiants
+        return back()
+            ->withInput()
+            ->withErrors(['email' => 'Email ou mot de passe incorrect.']);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::guard('admin')->logout(); // Déconnecte l'admin
+
+        $request->session()->invalidate(); // Invalide la session actuelle
+        $request->session()->regenerateToken(); // Regénère le token CSRF
+
+        return redirect()->route('login_admin'); // Redirige vers la page de login admin
     }
 }

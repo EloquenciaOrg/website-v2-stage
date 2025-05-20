@@ -8,37 +8,8 @@
 
   <!-- Bootstrap CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <style>
-    .ville-img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 10px;
-    }
-
-    .card-ville {
-      overflow: hidden;
-      border: none;
-    }
-
-    .navbar-brand img {
-      border-radius: 50%;
-    }
-
-    .highlight-bar {
-      overflow: hidden;
-      white-space: nowrap;
-      animation: scroll 12s linear infinite;
-      font-weight: bold;
-      font-size: 1.1rem;
-    }
-
-    @keyframes scroll {
-      0%   { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
-  </style>
+  <!-- Icons8 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body class="pt-5 bg-light">
 
@@ -62,7 +33,13 @@
           <li class="nav-item"><a class="nav-link" href="{{ url('/reduction') }}">Réduction</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url('/#contact') }}">Contact</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url('/propos') }}">A propos</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url('/login') }}">Connexion</a></li>
+          @guest('member')<li class="nav-item"><a class="nav-link" href="{{ url('/login') }}">Connexion</a></li>@endguest
+          @auth('member')
+          <form method="POST" action="{{ route('member.logout') }}">
+            @csrf
+            <button type="submit" class="btn nav-link">Déconnexion <i class="bi bi-box-arrow-right"></i></button>
+          </form>
+          @endauth
         </ul>
       </div>
     </div>
@@ -100,6 +77,20 @@
         <div class="mb-3">
           <label for="file" class="form-label">Justificatif (PDF, JPG, PNG)</label>
           <input class="form-control" type="file" id="file" name="file" accept=".jpg,.jpeg,.png,.pdf" required>
+        </div>
+
+        <div class="mb-3 mt-3">
+          <label for="captcha" class="form-label">Captcha</label>
+          <div class="d-flex align-items-center gap-3 mb-2">
+            <img src="{{ route('captcha.image') }}" alt="captcha" id="captcha-img" style="height: 30px; width: 65px;">
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="document.getElementById('captcha-img').src='{{ route('captcha.image') }}?rand=' + Math.random();">
+              🔁
+            </button>
+          </div>
+          <input type="text" name="captcha" id="captcha" class="form-control" required>
+          @error('captcha')
+            <div class="invalid-feedback d-block">{{ $message }}</div>
+          @enderror
         </div>
 
         <p class="text-muted small mt-3">

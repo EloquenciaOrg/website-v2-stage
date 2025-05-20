@@ -15,7 +15,7 @@ class ParametreController extends Controller
         $partenaires = Parametre::where('name', 'like','partenaire%')->where('state', 1)->get();
         
 
-        return view('parametre', compact('settings','articles','blogs','partenaires'));
+        return view('admin.parametre', compact('settings','articles','blogs','partenaires'));
     }
 
     public function index_welcome()

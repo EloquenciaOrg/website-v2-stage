@@ -8,6 +8,9 @@ use App\Models\Code;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AcceptReductionMail;
 use App\Mail\DenyReductionMail;
+use App\Services\Captcha;
+use Illuminate\Support\Facades\Storage;
+
 
 
 class ReductionController extends Controller
@@ -16,7 +19,7 @@ class ReductionController extends Controller
     {
         $reductions = Reduction::where('state', 0)->get();
         $historique = Reduction::whereIn('state', [1, 2])->get();
-        return view('gestion_reduction', compact('reductions','historique'));
+        return view('admin.gestion_reduction', compact('reductions','historique'));
     }
 
     public function demande_reduction(Request $request)
@@ -25,8 +28,16 @@ class ReductionController extends Controller
         $request->validate([
             'name' => 'required|string|max:60',
             'email' => 'required|email|max:60',
-            'file' => 'required|file|mimes:jpg,jpeg,png,pdf'
+            'file' => 'required|file|mimes:jpg,jpeg,png,pdf',
+            'captcha' => 'required|max:60'
         ]);
+
+        $captcha = new Captcha();
+        if (!$captcha->checkCaptcha($request->input('captcha'))) {
+            return back()
+                ->withInput()
+                ->with('error', 'Captcha incorrect');
+        }
 
         // Récupération du contenu binaire du fichier
         $fileContent = file_get_contents($request->file('file')->getRealPath());
@@ -45,11 +56,21 @@ class ReductionController extends Controller
     public function downloadProof($id)
     {
         $reduction = Reduction::findOrFail($id);
+        $fileContent = $reduction->proof;
 
-        return response($reduction->proof)
-            ->header('Content-Type', 'application/pdf')
-            ->header('Content-Disposition', 'attachment; filename="justificatif_'.$id.'.pdf"');
+        // Détecter dynamiquement le type MIME
+        $finfo = finfo_open();
+        $mimeType = finfo_buffer($finfo, $fileContent, FILEINFO_MIME_TYPE);
+        finfo_close($finfo);
+
+        // Extraire l’extension depuis le MIME
+        $extension = explode('/', $mimeType)[1] ?? 'bin';
+
+        return response($fileContent)
+            ->header('Content-Type', $mimeType)
+            ->header('Content-Disposition', 'attachment; filename="justificatif_'.$reduction->name.'.'.$extension.'"');
     }
+
 
     public function reduction_refuse(Request $request)
     {

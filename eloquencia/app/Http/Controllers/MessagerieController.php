@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Messagerie;
+use App\Services\Captcha;
 
 
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class MessagerieController extends Controller
 
         $messages = Messagerie::orderBy('datetime', $order)->get();
         //$messages = Messagerie::all();
-        return view('messagerie', compact('messages'));
+        return view('admin.messagerie', compact('messages'));
     }
 
     public function store(Request $request)
@@ -24,7 +25,15 @@ class MessagerieController extends Controller
             'name' => 'required|max:40',
             'email' => 'required|email|max:60',
             'message' => 'required',
+            'captcha' => 'required'
         ]);
+
+        $captcha = new Captcha();
+        if (!$captcha->checkCaptcha($request->input('captcha'))) {
+            return back()
+                ->withInput()
+                ->with('error', 'Captcha incorrect');
+        }
 
         // Enregistrement en base
         Messagerie::create([

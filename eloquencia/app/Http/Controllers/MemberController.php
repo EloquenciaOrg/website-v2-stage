@@ -5,6 +5,8 @@ use App\Models\Member;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ResetPasswordMail;
 use Illuminate\Support\Facades\Hash;
+use App\Services\Captcha;
+use Illuminate\Support\Facades\Auth;
 
 
 
@@ -15,14 +17,14 @@ class MemberController extends Controller
     public function index()
     {
         $members = Member::all();
-        return view('members', compact('members'));
+        return view('admin.members', compact('members'));
     }
 
     public function index_change_password(Request $request)
     {
         $token = $request->query('reset');
         $member = Member::where('reset', $token)->first();
-        return view('change_password', compact('member'));
+        return view('admin.change_password', compact('member'));
     }
 
     public function updateEmail(Request $request)
@@ -81,4 +83,44 @@ class MemberController extends Controller
 
         return back()->with('success', 'Mot de passe mis à jour');
     }
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|max:60',
+            'password' => 'required',
+            'captcha' => 'required'
+        ]);
+
+        $captcha = new Captcha();
+        if (!$captcha->checkCaptcha($request->input('captcha'))) {
+            return back()
+                ->withInput()
+                ->with('error', 'Captcha incorrect');
+        }
+
+        // Vérification des identifiants
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::guard('member')->attempt($credentials, $request->boolean('remember'))) {
+            $request->session()->regenerate(); // Sécurise la session
+            return redirect()->intended('/lms'); // charge directement la vue lms.blade.php
+        }
+
+        // Sinon : mauvais identifiants
+        return back()
+            ->withInput()
+            ->withErrors(['email' => 'Email ou mot de passe incorrect.']);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::guard('member')->logout();
+
+        $request->session()->invalidate(); // Invalide la session actuelle
+        $request->session()->regenerateToken(); // Regénère le token CSRF
+
+        return redirect()->route('login'); // Redirige vers la page de login 
+    }
+
 }

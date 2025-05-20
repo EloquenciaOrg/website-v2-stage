@@ -10,6 +10,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- AOS Animate on Scroll CSS -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <!-- Icons8 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
   <style>
     .img-featurette {
@@ -44,7 +46,13 @@
           <li class="nav-item"><a class="nav-link" href="{{ url('/reduction') }}">Réduction</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url('/#contact') }}">Contact</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url('/propos') }}">A propos</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url('/login') }}">Connexion</a></li>
+          @guest('member')<li class="nav-item"><a class="nav-link" href="{{ url('/login') }}">Connexion</a></li>@endguest
+          @auth('member')
+          <form method="POST" action="{{ route('member.logout') }}">
+            @csrf
+            <button type="submit" class="btn nav-link">Déconnexion <i class="bi bi-box-arrow-right"></i></button>
+          </form>
+          @endauth
         </ul>
       </div>
     </div>
@@ -233,6 +241,19 @@ Votre mission sera de veiller à ce que toutes les démarches et obligations off
         <div class="mb-3">
             <label for="message" class="form-label">Message</label>
             <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
+        </div>
+        <div class="mb-3 mt-3">
+          <label for="captcha" class="form-label">Captcha</label>
+          <div class="d-flex align-items-center gap-3 mb-2">
+            <img src="{{ route('captcha.image') }}" alt="captcha" id="captcha-img" style="height: 30px; width: 65px;">
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="document.getElementById('captcha-img').src='{{ route('captcha.image') }}?rand=' + Math.random();">
+              🔁
+            </button>
+          </div>
+          <input type="text" name="captcha" id="captcha" class="form-control" required>
+          @error('captcha')
+          <div class="invalid-feedback d-block">{{ $message }}</div>
+          @enderror
         </div>
       </div>
       <div class="modal-footer">
