@@ -16,7 +16,7 @@
   <!-- NAVBAR -->
   <nav class="navbar navbar-expand-lg bg-warning shadow-sm fixed-top">
     <div class="container">
-      <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
+      <a class="navbar-brand d-flex align-items-center" href="{{ url('/admin/admin') }}">
         <img src="{{ asset('images/logo.png') }}" alt="Logo" width="40" height="40" class="me-2">
         <strong>Eloquéncia</strong>
       </a>

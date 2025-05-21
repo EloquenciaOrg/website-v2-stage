@@ -59,10 +59,6 @@ Route::get('/mentions_legales', function () {
     return view('mentions_legales');
 });
 
-Route::get('/admin/parametre', function () {
-    return view('admin.parametre');
-})->middleware('auth:admin');
-
 Route::get('/lms', function () {
     return view('lms');
 })->middleware('auth:member');
@@ -78,32 +74,32 @@ Route::get('/login_admin', function () {
 
 // ROUTES POUR LES CONTROLLEURS
 
-Route::get('/gestion_admins', [AdminsController::class, 'index']);
+Route::get('/admin/gestion_admins', [AdminsController::class, 'index'])->middleware('auth:admin');
 Route::put('/gestion_admins_update_password', [AdminsController::class, 'updatePassword']);
-Route::post('/login_admin', [AdminsController::class, 'login'])->name('login_admin_attempt');
+Route::post('/login_admin_gestion', [AdminsController::class, 'login'])->name('login_admin_attempt');
 Route::post('/admin/logout', [AdminsController::class, 'logout'])->name('admin.logout');
 
 
-Route::get('/members', [MemberController::class, 'index']);
+Route::get('/admin/members', [MemberController::class, 'index'])->middleware('auth:admin');
 Route::get('/change_password', [MemberController::class, 'index_change_password']);
 Route::put('/members_update_email', [MemberController::class, 'updateEmail']);
 Route::post('/reset_password', [MemberController::class, 'reset']);
 Route::put('/member_update_password', [MemberController::class, 'updatePassword']);
-Route::post('/login', [MemberController::class, 'login'])->name('login_attempt');
-Route::post('/admin/logout', [MemberController::class, 'logout'])->name('member.logout');
+Route::post('/login_member_site', [MemberController::class, 'login'])->name('login_attempt');
+Route::post('/logout', [MemberController::class, 'logout'])->name('member.logout');
 
 
-Route::get('/messagerie', [MessagerieController::class, 'index'])->name('filter');
+Route::get('/admin/messagerie', [MessagerieController::class, 'index'])->name('filter')->middleware('auth:admin');
 Route::post('/envoie_mess', [MessagerieController::class, 'store']);
 Route::delete('/supp_mess', [MessagerieController::class, 'supp'])->name('messagerie.delete');
 
-Route::get('/gestion_reduction', [ReductionController::class, 'index']);
+Route::get('/admin/gestion_reduction', [ReductionController::class, 'index'])->middleware('auth:admin');
 Route::post('/demande_reduction', [ReductionController::class, 'demande_reduction']);
 Route::post('/reduction_accepte', [ReductionController::class, 'reduction_accepte']);
 Route::post('/reduction_refuse', [ReductionController::class, 'reduction_refuse']);
 Route::get('/download-proof/{id}', [ReductionController::class, 'downloadProof'])->name('download.proof');
 
-Route::get('/parametre', [ParametreController::class, 'index']);
+Route::get('/admin/parametre', [ParametreController::class, 'index'])->middleware('auth:admin');
 Route::put('/notif_desactiver', [ParametreController::class, 'desactiver']);
 Route::put('/notif_activer', [ParametreController::class, 'activer']);
 Route::put('/notif_update', [ParametreController::class, 'update']);
