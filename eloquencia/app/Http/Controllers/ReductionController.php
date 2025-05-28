@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Reduction;
 use App\Models\Code;
+use App\Models\Ban;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AcceptReductionMail;
 use App\Mail\DenyReductionMail;
@@ -28,8 +29,9 @@ class ReductionController extends Controller
         $request->validate([
             'name' => 'required|string|max:60',
             'email' => 'required|email|max:60',
-            'file' => 'required|file|mimes:jpg,jpeg,png,pdf',
-            'captcha' => 'required|max:60'
+            'file' => 'required|file|mimetypes:application/pdf,image/jpeg,image/png',
+            'captcha' => 'required|max:60',
+            'cgu' => 'accepted'
         ]);
 
         $captcha = new Captcha();
@@ -37,6 +39,20 @@ class ReductionController extends Controller
             return back()
                 ->withInput()
                 ->with('error', 'Captcha incorrect');
+        }
+
+        $realMime = mime_content_type($request->file('file')->getPathname());
+        $allowed = ['application/pdf', 'image/jpeg', 'image/png'];
+        if (!in_array($realMime, $allowed)) {
+            return back()->withErrors(['file' => 'Format de fichier non autorisé.']);
+        }
+
+        // Vérification du bannissement
+        $ip = $request->ip();
+        $email = $request->email;
+
+        if (Ban::where('email', $email)->orWhere('ip', $ip)->exists()) {
+            return back()->withErrors(['email' => 'Vous avez été bloqué et ne pouvez pas envoyer de demande.']);
         }
 
         // Récupération du contenu binaire du fichier
@@ -47,6 +63,7 @@ class ReductionController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'proof' => $fileContent, // Enregistrement en BLOB
+            'ip' => $ip,
         ]);
 
         // Redirection avec message de succès
@@ -99,5 +116,15 @@ class ReductionController extends Controller
         Mail::to($demandeur->email)->send(new AcceptReductionMail($demandeur, $code));
 
         return back()->with('success', 'Email de validation de reduction envoyé.');
+    }
+
+    public function ban(Request $request)
+    {
+        Ban::create([
+            'email' => $request->email,
+            'ip' => $request->ip,
+        ]);
+
+        return back()->with('success', 'Utilisateur bloqué avec succès.');
     }
 }

@@ -44,7 +44,14 @@ class MemberController extends Controller
 
     public function reset(Request $request)
     {
-        $member = Member::findOrFail($request->ID);
+        if($request->ID)
+        {
+            $member = Member::findOrFail($request->ID);
+        }
+        else{
+            $member = Member::where('email', $request->email)->firstOrFail();
+        }
+        
         // Générer un token aléatoire à 6 chiffres
         $token = random_int(100000, 999999);
 
@@ -122,5 +129,4 @@ class MemberController extends Controller
 
         return redirect()->route('login'); // Redirige vers la page de login 
     }
-
 }

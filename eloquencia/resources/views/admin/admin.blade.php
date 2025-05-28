@@ -27,7 +27,7 @@
 
       <div class="collapse navbar-collapse" id="menu">
         <ul class="navbar-nav ms-auto">
-          @guest('admin')<li class="nav-item"><a class="nav-link" href="{{ url('/login_admin') }}">Connexion</a></li>@endguest
+          @guest('admin')<li class="nav-item"><a class="nav-link" href="{{ url('/admin/login_admin') }}">Connexion</a></li>@endguest
           @auth('admin')
           <form method="POST" action="{{ route('admin.logout') }}">
             @csrf
@@ -55,7 +55,7 @@
                 <img src="https://img.icons8.com/fluency/48/book.png" alt="Leçons" class="mb-3" width="48">
                 <h5 class="card-title fw-bold">Leçons</h5>
                 <p class="card-text text-muted">Gérer les leçons du site et de l'application</p>
-                <a href="{{ url('/lecons') }}" class="btn btn-warning">Accéder</a>
+                <a href="{{ url('/admin/lecons') }}" class="btn btn-warning">Accéder</a>
             </div>
         </div>
     </div>
@@ -67,7 +67,7 @@
                 <img src="https://img.icons8.com/fluency/48/discount.png" alt="Remises" class="mb-3" width="48">
                 <h5 class="card-title fw-bold">Remises</h5>
                 <p class="card-text text-muted">Accéder aux demandes de réduction</p>
-                <a href="{{ url('/gestion_reduction') }}" class="btn btn-warning">Accéder</a>
+                <a href="{{ url('/admin/gestion_reduction') }}" class="btn btn-warning">Accéder</a>
             </div>
         </div>
     </div>
@@ -79,7 +79,7 @@
                 <img src="https://img.icons8.com/fluency/48/new-post.png" alt="Messagerie" class="mb-3" width="48">
                 <h5 class="card-title fw-bold">Messagerie</h5>
                 <p class="card-text text-muted">Consulter les messages reçus</p>
-                <a href="{{ url('/messagerie') }}" class="btn btn-warning">Accéder</a>
+                <a href="{{ url('/admin/messagerie') }}" class="btn btn-warning">Accéder</a>
             </div>
         </div>
     </div>
@@ -91,7 +91,7 @@
                 <img src="https://img.icons8.com/fluency/48/user-group-man-man.png" alt="Utilisateurs" class="mb-3" width="48">
                 <h5 class="card-title fw-bold">Administrateurs</h5>
                 <p class="card-text text-muted">Gérer les utilisateurs administrateurs</p>
-                <a href="{{ url('/gestion_admins') }}" class="btn btn-warning">Accéder</a>
+                <a href="{{ url('/admin/gestion_admins') }}" class="btn btn-warning">Accéder</a>
             </div>
         </div>
     </div>
@@ -103,7 +103,7 @@
                 <img src="https://img.icons8.com/fluency/48/group-foreground-selected.png" alt="Adhérents" class="mb-3" width="48">
                 <h5 class="card-title fw-bold">Adhérents</h5>
                 <p class="card-text text-muted">Gérer les adhérents de l'association</p>
-                <a href="{{ url('/members') }}" class="btn btn-warning">Accéder</a>
+                <a href="{{ url('/admin/members') }}" class="btn btn-warning">Accéder</a>
             </div>
         </div>
     </div>
@@ -115,7 +115,7 @@
                 <img src="https://img.icons8.com/fluency/48/settings.png" alt="Paramètres" class="mb-3" width="48">
                 <h5 class="card-title fw-bold">Paramètres</h5>
                 <p class="card-text text-muted">Modifier les paramètres du site et du LMS</p>
-                <a href="{{ url('/parametre') }}" class="btn btn-warning">Accéder</a>
+                <a href="{{ url('/admin/parametre') }}" class="btn btn-warning">Accéder</a>
             </div>
         </div>
     </div>

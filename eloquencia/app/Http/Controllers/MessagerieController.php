@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Messagerie;
+use App\Models\Ban;
 use App\Services\Captcha;
 
 
@@ -25,7 +26,8 @@ class MessagerieController extends Controller
             'name' => 'required|max:40',
             'email' => 'required|email|max:60',
             'message' => 'required',
-            'captcha' => 'required'
+            'captcha' => 'required',
+            'cgu' => 'accepted'
         ]);
 
         $captcha = new Captcha();
@@ -35,11 +37,19 @@ class MessagerieController extends Controller
                 ->with('error', 'Captcha incorrect');
         }
 
+        $ip = $request->ip();
+        $email = $request->email;
+
+        if (Ban::where('email', $email)->orWhere('ip', $ip)->exists()) {
+            return back()->withErrors(['email' => 'Vous avez été bloqué.']);
+        }
+
         // Enregistrement en base
         Messagerie::create([
             'name' => $request->name,
             'email' => $request->email,
             'message' => $request->message,
+            'ip' => $ip,
         ]);
 
         // Redirection avec message de succès
@@ -59,5 +69,20 @@ class MessagerieController extends Controller
         $message->delete();
 
         return back()->with('success', 'Message supprimé avec succès.');
+    }
+
+    public function banUser(Request $request)
+    {
+        $request->validate([
+            'email' => 'nullable|email',
+            'ip' => 'nullable|ip',
+        ]);
+
+        Ban::create([
+            'email' => $request->email,
+            'ip' => $request->ip,
+        ]);
+
+        return back()->with('success', 'Utilisateur bloqué.');
     }
 }

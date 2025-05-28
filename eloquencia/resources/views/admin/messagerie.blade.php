@@ -80,6 +80,32 @@
                             </div>
                           </div>
                         </div>
+
+                        <button type="button" class="btn btn-sm btn-outline-dark" data-bs-toggle="modal" data-bs-target="#confirmBanModal{{ $msg->ID }}">Bloquer</button>
+                        <!-- Modal de confirmation de bannissement -->
+                        <div class="modal fade" id="confirmBanModal{{ $msg->ID }}" tabindex="-1" aria-labelledby="confirmBanModalLabel{{ $msg->ID }}" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="confirmBanModalLabel{{ $msg->ID }}">Confirmation</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                              </div>
+                              <div class="modal-body">
+                                Es-tu sûr de vouloir bloquer l'utilisateur : <strong>{{ $msg->email }}</strong> ?
+                              </div>
+                              <div class="modal-footer">
+                                <form method="POST" action="{{ route('ban.user.msg') }}">
+                                    @csrf
+                                    <input type="hidden" name="email" value="{{ $msg->email }}">
+                                    <input type="hidden" name="ip" value="{{ $msg->ip }}">
+                                    <button type="submit" class="btn btn-danger">Oui, bloquer</button>
+                                </form>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
                         
                     </div>
                     <div class="card-footer bg-transparent border-top-0 text-end text-muted small">

@@ -100,7 +100,7 @@
     <p class="lead bg-light">La plateforme de cours en ligne pour apprendre à parler en public</p>
     <a href="https://www.helloasso.com/associations/eloquencia/adhesions/adhesion" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#helloassoModal">Adhérer</a>
     @guest('member')<a href="{{ url('/login') }}" class="btn btn-sm btn-warning">Connexion</a>@endguest
-    @auth('member')<a href="{{ url('/lms') }}" class="btn btn-sm btn-warning">Connexion</a>@endauth
+    @auth('member')<a href="{{ url('/lms/lms') }}" class="btn btn-sm btn-warning">Accès au LMS</a>@endauth
   </div>
 
   <!-- CAROUSEL -->
@@ -129,19 +129,16 @@
   <!-- SECTION ARTICLES -->
   <div class="container py-5">
     <h2 class="text-center mb-4 fw-bold">Article à la une :</h2>
-        <div class="row g-4">
+        <div class="row g-4 justify-content-center">
           @foreach($articles as $article)
-            @php
-              $data = json_decode($article->value);
-            @endphp
 
             <div class="col-md-4">
               <div class="card h-100 shadow">
-                <img src="{{ asset($data->image) }}" class="card-img-top" alt="..." style="height: 400px;">
+                <img src="{{ $article->pic }}" alt="Image" class="card-img-top" style="height: 400px; object-fit: cover;">
                 <div class="card-body text-center">
-                  <h5 class="card-title">{{ $data->title }}</h5>
-                  <p class="card-text">{{ $data->description }}</p>
-                  <a href="{{ $data->link }}" class="btn btn-outline-warning">Lire plus</a>
+                  <h5 class="card-title">{{ $article->title }}</h5>
+                  <p class="card-text">{{ $article->summary }}</p>
+                  <a href="{{ route('article.show', $article->id) }}" class="btn btn-outline-warning">Lire plus</a>
                 </div>
               </div>
             </div>
@@ -192,6 +189,11 @@
       <h2 class="text-center mb-4 fw-bold">Contactez-nous</h2>
       <form method="POST" action="/envoie_mess" class="p-4 shadow bg-warning rounded mx-auto" style="max-width: 700px;">
       @csrf <!-- PROTECTION CSRF -->
+      @if ($errors->has('throttle'))
+        <div class="alert alert-danger text-center">
+          {{ $errors->first('throttle') }}
+        </div>
+      @endif
         <div class="mb-3">
           <label for="name" class="form-label">Nom</label>
           <input type="text" class="form-control" id="name" name="name" placeholder="Votre nom" required>
@@ -216,11 +218,35 @@
           @error('captcha')
             <div class="invalid-feedback d-block">{{ $message }}</div>
           @enderror
+
+          <input class="form-check-input mt-2" type="checkbox" id="cgu" name="cgu" required>
+          <label class="form-check-label mt-1" for="cgu">J’accepte les <a href="" target="_blank">conditions générales d’utilisation des données</a></label>
         </div>
         <div class="text-center">
           <button type="submit" class="btn btn-light px-4">Envoyer</button>
         </div>
       </form>
+
+      <!-- Modal de mise en garde -->
+      <div class="modal fade" id="emailWarningModal" tabindex="-1" aria-labelledby="emailWarningLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content border-warning">
+            <div class="modal-header bg-warning">
+              <h5 class="modal-title fw-bold" id="emailWarningLabel">Attention !</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body">
+              Les adresses <strong>@icloud.com</strong> et <strong>@sfr.fr</strong> peuvent poser problème pour la réception des e-mails.
+              <br><br>
+              Si possible, utilisez une autre adresse (ex: Gmail, Outlook...).
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-warning" data-bs-dismiss="modal">J'ai compris</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -254,6 +280,21 @@
       </div>
     </div>
   </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const emailInput = document.getElementById('email');
+
+    emailInput.addEventListener('blur', function () {
+      const email = emailInput.value.toLowerCase();
+
+      if (email.includes('@icloud.com') || email.includes('@sfr.fr')) {
+        const modal = new bootstrap.Modal(document.getElementById('emailWarningModal'));
+        modal.show();
+      }
+    });
+  });
+</script>
 
 </body>
 </html>

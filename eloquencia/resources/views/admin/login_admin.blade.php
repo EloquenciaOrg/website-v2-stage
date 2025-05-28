@@ -77,7 +77,6 @@
 
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-warning text-dark fw-bold rounded-pill">Se connecter</button>
-                    <a href="" class="btn btn-link text-decoration-none">Mot de passe oublié ?</a>
                 </div>
             </form>
         </div>

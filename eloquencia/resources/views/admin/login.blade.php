@@ -12,10 +12,12 @@
 
 
 
+
 </head>
 <body class="pt-5 bg-light">
     <div class="text-center">
-    <img src="{{ asset('images/logo.png') }}" alt="logo" style="height:200px;"></div>
+    <img src="{{ asset('images/logo.png') }}" alt="logo" style="height:200px;">
+    </div>
     
 
 
@@ -41,7 +43,7 @@
                     <div class="input-group">
                         <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
                         <input type="email" name="email" id="email" class="form-control rounded-end @error('email') is-invalid @enderror"
-                            value="{{ old('email') }}" required autofocus>
+                            value="{{ old('email') }}" autofocus>
                     </div>
                     @error('email')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -53,7 +55,7 @@
                     <div class="input-group">
                         <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
                         <input type="password" name="password" id="password"
-                            class="form-control rounded-end @error('password') is-invalid @enderror" required>
+                            class="form-control rounded-end @error('password') is-invalid @enderror" >
                     </div>
                     @error('password')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -66,7 +68,7 @@
                                 🔁
                             </button>
                         </div>
-                        <input type="text" name="captcha" id="captcha" class="form-control" required>
+                        <input type="text" name="captcha" id="captcha" class="form-control" >
                         @error('captcha')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
@@ -82,7 +84,8 @@
 
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-warning text-dark fw-bold rounded-pill">Se connecter</button>
-                    <a href="" class="btn btn-link text-decoration-none">Mot de passe oublié ?</a>
+                    <a href="/password_forgot" class="text-primary text-decoration-none text-center">Mot de passe oublié ?</a>
+                
                 </div>
             </form>
         </div>

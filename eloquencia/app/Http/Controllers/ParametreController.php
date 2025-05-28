@@ -4,50 +4,36 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Parametre;
+use App\Models\Blog;
 
 class ParametreController extends Controller
 {
     public function index()
     {
         $settings = Parametre::where('name', 'notifications')->get();
-        $articles = Parametre::where('name', 'like','article_a_la_une%')->where('state', 1)->get();
-        $blogs = Parametre::where('name', 'like','blog_article%')->where('state', 1)->get();
         $partenaires = Parametre::where('name', 'like','partenaire%')->where('state', 1)->get();
-        
+        $articles = Blog::where('featured', 1)->get();
+        $blogs = Blog::where('featured', 0)->get();
 
-        return view('admin.parametre', compact('settings','articles','blogs','partenaires'));
+        return view('admin.parametre', compact('settings','partenaires','articles','blogs'));
     }
 
     public function index_welcome()
     {
-        $articles = Parametre::where('name', 'like','article_a_la_une%')->where('state', 1)->get();
         $data = Parametre::where('name', 'notifications')->where('state', 1)->first();
         $partenaires = Parametre::where('name', 'like','partenaire%')->where('state', 1)->get();
+        $articles = Blog::where('featured', 1)->get();
         if ($data)
         {
             $setting = json_decode($data->value);
-            return view('welcome', compact('setting','articles','partenaires'));
+            return view('welcome', compact('setting','partenaires','articles'));
         }
         else
         {
             $setting = null;
-            return view('welcome', compact('setting','articles','partenaires'));
+            return view('welcome', compact('setting','partenaires','articles'));
         }
         
-    }
-
-    public function index_blog()
-    {
-        $records = Parametre::where('name', 'like', 'blog_article%')->where('state', 1)->get();
-        $blogs = $records->map(function($item) {
-            $data = json_decode($item->value);
-            $data->name = $item->name; // facultatif si on veux l’utiliser
-            return $data;
-        });
-        return view('blog', compact('blogs'));
-        $blogs = Parametre::where('name', 'like','blog_article%')->where('state', 1)->get();
-
-        return view('blog', compact('blogs'));
     }
 
     public function desactiver(Request $request)
@@ -78,108 +64,6 @@ class ParametreController extends Controller
 
         $notif->save();
         return back()->with('success', 'Notification mis a jour');
-    }
-
-    public function article_delete(Request $request)
-    {
-        $id = $request->id;
-        $article = Parametre::find($id);
-
-        $article->delete();
-        return back()->with('success', 'Articles supprimé');
-    }
-
-    public function article_add(Request $request)
-    {
-        // Validation de base
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'image' => 'required|string|max:255',
-            'description' => 'required|string|max:1000',
-        ]);
-
-        // Récupère tous les articles "à la une" existants
-        $last = Parametre::where('name', 'like', 'article_a_la_une_%')
-                        ->orderByRaw('CAST(SUBSTRING(name, 18) AS UNSIGNED) DESC')
-                        ->first();
-
-        // Détermine le prochain numéro d'article
-        $nextId = 1;
-        if ($last) {
-            $parts = explode('_', $last->name);
-            $lastNum = intval(end($parts));
-            $nextId = $lastNum + 1;
-        }
-
-        // Nouveau nom basé sur l’ID suivant
-        $name = 'article_a_la_une_' . $nextId;
-        $image = 'images/' . $request->image;
-
-        // Création de l’article
-        $article = new Parametre();
-        $article->name = $name;
-        $article->state = 1;
-        $article->value = json_encode([
-            'title' => $request->title,
-            'image' => $image,
-            'description' => $request->description,
-            'link' => ''
-        ]);
-
-        $article->save();
-
-        return back()->with('success', 'Article ajouté avec succès.');
-    }
-
-    public function article_blog_delete(Request $request)
-    {
-        $id = $request->id;
-        $article = Parametre::find($id);
-
-        $article->delete();
-        return back()->with('success', 'Articles du blog supprimé');
-    }
-
-    public function article_blog_add(Request $request)
-    {
-        // Validation de base
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'image' => 'required|string|max:255',
-            'description' => 'required|string|max:1000',
-        ]);
-
-        // Récupère tous les articles "à la une" existants
-        $last = Parametre::where('name', 'like', 'blog_article%')
-                        ->orderByRaw('CAST(SUBSTRING(name, 18) AS UNSIGNED) DESC')
-                        ->first();
-
-        // Détermine le prochain numéro d'article
-        $nextId = 1;
-        if ($last) {
-            $parts = explode('_', $last->name);
-            $lastNum = intval(end($parts));
-            $nextId = $lastNum + 1;
-        }
-
-        // Nouveau nom basé sur l’ID suivant
-        $name = 'blog_article_' . $nextId;
-        $image = 'images/' . $request->image;
-
-        // Création de l’article
-        $article = new Parametre();
-        $article->name = $name;
-        $article->state = 1;
-        $article->value = json_encode([
-            'title' => $request->title,
-            'image' => $image,
-            'description' => $request->description,
-            'link' => ''
-        ]);
-
-        $article->save();
-
-        return back()->with('success', 'Article ajouté avec succès.');
     }
 
     public function partenaire_add(Request $request)
@@ -224,7 +108,7 @@ class ParametreController extends Controller
 
         $article->save();
 
-        return back()->with('success', 'Article ajouté avec succès.');
+        return back()->with('success', 'Partenaire ajouté avec succès.');
     }
 
     public function partenaire_delete(Request $request)
@@ -235,4 +119,6 @@ class ParametreController extends Controller
         $article->delete();
         return back()->with('success', 'c supprimé');
     }
+
+    
 }

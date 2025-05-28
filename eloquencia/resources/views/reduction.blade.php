@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Eloquéncial</title>
+  <title>Eloquéncia</title>
   <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -61,6 +61,11 @@
               {{ session('error') }}
           </div>
       @endif
+      @if ($errors->has('throttle'))
+        <div class="alert alert-danger text-center">
+          {{ $errors->first('throttle') }}
+        </div>
+      @endif
 
       <form class="bg-white shadow rounded p-4" action="/demande_reduction" method="POST" enctype="multipart/form-data">
       @csrf
@@ -93,6 +98,9 @@
           @enderror
         </div>
 
+        <input class="form-check-input" type="checkbox" id="cgu" name="cgu" required>
+        <label class="form-check-label" for="cgu">J’accepte les <a href="" target="_blank">conditions générales d’utilisation des données</a></label>
+
         <p class="text-muted small mt-3">
           Vos données sont utilisées uniquement pour cette demande et seront supprimées une fois traitée.
         </p>
@@ -101,6 +109,26 @@
           <button type="submit" class="btn btn-warning px-4 fw-semibold">Envoyer</button>
         </div>
       </form>
+
+      <!-- Modal de mise en garde -->
+      <div class="modal fade" id="emailWarningModal" tabindex="-1" aria-labelledby="emailWarningLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content border-warning">
+            <div class="modal-header bg-warning">
+              <h5 class="modal-title fw-bold" id="emailWarningLabel">Attention !</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body">
+              Les adresses <strong>@icloud.com</strong> et <strong>@sfr.fr</strong> peuvent poser problème pour la réception des e-mails.
+              <br><br>
+              Si possible, utilisez une autre adresse (ex: Gmail, Outlook...).
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-warning" data-bs-dismiss="modal">J'ai compris</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   
@@ -117,5 +145,19 @@
 
   <!-- Scripts Bootstrap -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const emailInput = document.getElementById('email');
+
+    emailInput.addEventListener('blur', function () {
+      const email = emailInput.value.toLowerCase();
+
+      if (email.includes('@icloud.com') || email.includes('@sfr.fr')) {
+        const modal = new bootstrap.Modal(document.getElementById('emailWarningModal'));
+        modal.show();
+      }
+    });
+  });
+</script>
 </body>
 </html>

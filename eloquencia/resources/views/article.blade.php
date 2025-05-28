@@ -47,31 +47,36 @@
     </div>
   </nav>
 
+  <div class="container py-5">
 
-  <!-- BLOG -->
-  <!-- BLOG -->
-  <div class="container" id="blog">
-    <h2 class="text-center fw-bold mb-5 mt-5">Blog :</h2>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
-      
-      @foreach ($blogs as $blog)
-          <div class="col">
-              <a href="{{ route('article.show', $blog->id) }}" class="text-decoration-none text-dark">
-                  <div class="card h-100 shadow border-0">
-                      <img src="{{ $blog->pic }}" class="card-img-top" alt="Image" style="height: 200px; object-fit: cover;">
-                      <div class="card-body text-center">
-                          <h5 class="fw-bold">{{ $blog->title }}</h5>
-                          <div class="text-muted" style="max-height: 100px; overflow: hidden;">
-                              <p>{{ $blog->summary }}</p>
-                          </div>
-                      </div>
-                  </div>
-              </a>
-          </div>
-      @endforeach  
+    <!-- Titre de l'article -->
+    <h1 class="fw-bold text-center mb-4 text-warning">{{ $article->title }}</h1>
 
+    <!-- Résumé (sous-titre) -->
+    <p class="lead text-center text-muted mb-5" style="font-size: 1.25rem;">
+        {{ $article->summary }}
+    </p>
+
+    <!-- Image (si disponible) -->
+    @if ($article->pic)
+        <div class="text-center mb-4">
+            <img src="{{ asset($article->pic) }}" alt="Image de l'article" class="img-fluid rounded shadow" style="max-height: 400px; object-fit: cover;">
+        </div>
+    @endif
+
+    <!-- Contenu de l'article (formaté avec Summernote) -->
+    <div class="bg-light p-4 rounded shadow-sm mt-5" style="border-left: 6px solid #ffc107;">
+        {!! $article->content !!}
     </div>
-  </div>
+
+    <!-- Bouton retour -->
+    <div class="text-center mt-5">
+        <a href="{{ url('/blog') }}" class="btn btn-warning fw-bold px-4">
+            ← Retour au blog
+        </a>
+    </div>
+
+</div>
 
 
   <footer class="bg-light text-center py-3">
