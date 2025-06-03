@@ -268,7 +268,7 @@ Votre mission sera de veiller à ce que toutes les démarches et obligations off
   <footer class="bg-light text-center py-3">
   <div class="container">
     <small class="text-muted">
-      © 2025 <strong>Eloquéncia</strong> | Fait avec 💙 et hébergé à Marseille | <a href="/mentions_legales">Mentions légales</a>
+      © 2025 <strong>Eloquéncia</strong> | Fait avec 💙 et hébergé en France | <a href="/mentions_legales">Mentions légales</a>
     </small>
   </div>
   </footer>

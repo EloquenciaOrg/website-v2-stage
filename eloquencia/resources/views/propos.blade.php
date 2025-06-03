@@ -55,7 +55,7 @@
   <div class="container">
     <!-- Titre principal -->
     <div class="text-center mb-5">
-      <h1 class="fw-bold">Eloquência, l’art de convaincre, le plaisir de parler !</h1>
+      <h1 class="fw-bold">Eloquéncia, l’art de convaincre, le plaisir de parler !</h1>
       <p class="lead">L’Association Eloquéncia (loi 1901) est une jeune association fondée par Marouan Jlassi à Berre l’Étang qui a pour but d’enseigner l’art oratoire dans le milieu local. Elle a pour conviction d’aider les personnes qui souhaitent développer et perfectionner leur expression orale quotidienne, professionnelle ou scolaire, notamment pour la préparation d’entretiens d’embauche ou d’examens oraux.  </p>
     </div>
 
@@ -205,7 +205,7 @@
   <footer class="bg-light text-center py-3">
   <div class="container">
     <small class="text-muted">
-      © 2025 <strong>Eloquéncia</strong> | Fait avec 💙 et hébergé à Marseille | <a href="/mentions_legales">Mentions légales</a>
+      © 2025 <strong>Eloquéncia</strong> | Fait avec 💙 et hébergé en France | <a href="/mentions_legales">Mentions légales</a>
     </small>
   </div>
   </footer>

@@ -60,8 +60,8 @@ Route::get('/mentions_legales', function () {
     return view('mentions_legales');
 });
 
-Route::get('/lms', function () {
-    return view('lms');
+Route::get('/lms/lms', function () {
+    return view('lms.lms');
 })->middleware('auth:member');
 
 Route::get('/login', function () {

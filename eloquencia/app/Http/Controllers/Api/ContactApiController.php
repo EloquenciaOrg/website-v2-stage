@@ -4,18 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Messagerie;
+use App\Models\Ban;
 
 class ContactApiController extends Controller
 {
-    public function store(Request $request)
+    public function index(Request $request)
     {
         // Validation des champs
         try {
             $request->validate([
-                'name' => 'required|max:40',
-                'email' => 'required|email|max:60',
-                'message' => 'required',
-                'cgu' => 'accepted'
+                'name' => 'required|string|max:60',
+                'email' => 'required|string|max:80',
+                'message' => 'required|string|max:500',
             ]);
         } catch (\Throwable $th) {
             return response()->json([

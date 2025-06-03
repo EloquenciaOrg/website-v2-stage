@@ -12,21 +12,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
   <style>
-    .ville-img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 10px;
-    }
-
-    .card-ville {
-      overflow: hidden;
-      border: none;
-    }
-
-    .navbar-brand img {
-      border-radius: 50%;
-    }
 
     .highlight-bar {
       overflow: hidden;
@@ -67,10 +52,13 @@
           <li class="nav-item"><a class="nav-link" href="{{ url('/propos') }}">A propos</a></li>
           @guest('member')<li class="nav-item"><a class="nav-link" href="{{ url('/login') }}">Connexion</a></li>@endguest
           @auth('member')
+          <li class="nav-item"><a class="nav-link" href="{{ url('/lms/lms') }}">Accès au LMS</a></li>
+          <!--
           <form method="POST" action="{{ route('member.logout') }}">
             @csrf
             <button type="submit" class="btn nav-link">Déconnexion <i class="bi bi-box-arrow-right"></i></button>
           </form>
+  -->
           @endauth
         </ul>
       </div>
@@ -253,7 +241,7 @@
   <footer class="bg-light text-center py-3">
   <div class="container">
     <small class="text-muted">
-      © 2025 <strong>Eloquéncia</strong> | Fait avec 💙 et hébergé à Marseille | <a href="/mentions_legales">Mentions légales</a>
+      © 2025 <strong>Eloquéncia</strong> | Fait avec 💙 et hébergé en France | <a href="/mentions_legales">Mentions légales</a>
     </small>
   </div>
   </footer>

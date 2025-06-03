@@ -15,10 +15,10 @@ class ReductionApiController extends Controller
             // Validation
             $request->validate([
                 'name' => 'required|string|max:60',
-                'email' => 'required|email|max:60',
-                'file' => 'required|file|mimetypes:application/pdf,image/jpeg,image/png',
-                'cgu' => 'accepted'
+                'email' => 'required|string|max:60',
+                'file' => 'required|image',
             ]);
+            
         } catch (\Throwable $th) {
             return response()->json([
                 'response_code' => 412,

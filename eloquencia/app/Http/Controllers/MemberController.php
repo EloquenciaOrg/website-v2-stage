@@ -111,7 +111,7 @@ class MemberController extends Controller
 
         if (Auth::guard('member')->attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate(); // Sécurise la session
-            return redirect()->intended('/lms'); // charge directement la vue lms.blade.php
+            return redirect()->intended('/lms/lms'); // charge directement la vue lms.blade.php
         }
 
         // Sinon : mauvais identifiants

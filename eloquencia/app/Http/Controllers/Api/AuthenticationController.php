@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
-use App\Models\User;
+use App\Models\Member;
 
 class AuthenticationController extends Controller
 {
@@ -19,15 +19,16 @@ class AuthenticationController extends Controller
     {
         try {
             $credentials = $request->validate([
-                'email'    => 'required|email',
+                'email'    => 'required|string',
                 'password' => 'required|string',
             ]);
+
+
 
             if (!Auth::guard('member')->attempt($credentials)) {
                 return response()->json([
                     'response_code' => 403,
-                    'status'        => 'error',
-                    'message'       => 'Unauthorized',
+                    'status'        => 'forbidden',
                 ], 403);
             }
 
@@ -37,7 +38,6 @@ class AuthenticationController extends Controller
             return response()->json([
                 'response_code' => 200,
                 'status'        => 'success',
-                'message'       => 'Login successful',
                 'user_info'     => [
                     'id'    => $user->id,
                     'name'  => $user->name,
@@ -59,7 +59,6 @@ class AuthenticationController extends Controller
             return response()->json([
                 'response_code' => 500,
                 'status'        => 'error',
-                'message'       => 'Login failed',
             ], 500);
         }
     }
@@ -70,12 +69,11 @@ class AuthenticationController extends Controller
     public function userInfo()
     {
         try {
-            $users = Member::latest()->paginate(10);
+            $users = Member::orderBy('id', 'desc')->paginate(10);
 
             return response()->json([
                 'response_code'  => 200,
                 'status'         => 'success',
-                'message'        => 'Fetched user list successfully',
                 'data_user_list' => $users,
             ]);
         } catch (\Exception $e) {
