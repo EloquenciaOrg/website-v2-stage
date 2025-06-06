@@ -23,14 +23,30 @@ class AuthenticationController extends Controller
                 'password' => 'required|string',
             ]);
 
+            if(false) // MISE EN COMMENTAIRE
+            {
+                // Récupérer le membre correspondant à l'email
+                $member = Member::where('email', $credentials['email'])->first();
 
-
+                // Vérifier l'existence et le mot de passe
+                if (!$member || $credentials['password'] !== $member->password) {
+                    // Échec de connexion
+                    return response()->json([
+                        'response_code' => 403,
+                        'status'        => 'forbidden',
+                    ], 403);
+                }
+            }
+            
+            
+            
             if (!Auth::guard('member')->attempt($credentials)) {
                 return response()->json([
                     'response_code' => 403,
                     'status'        => 'forbidden',
                 ], 403);
             }
+            
 
             $user = Auth::guard('member')->user();
             $token = $user->createToken('authToken')->plainTextToken;
@@ -40,6 +56,7 @@ class AuthenticationController extends Controller
                 'status'        => 'success',
                 'user_info'     => [
                     'id'    => $user->id,
+                    'first_name' => $user->first_name,
                     'name'  => $user->name,
                     'email' => $user->email,
                 ],

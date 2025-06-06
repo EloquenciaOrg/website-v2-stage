@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="{{ asset('css/propos.css') }}">
   <!-- Icons8 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- AOS -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
 
   <style>
@@ -19,94 +21,116 @@
 </head>
 <body class="bg-light">
 
-  <!-- SIDEBAR -->
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Eloquéncia</title>
+  <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
 <div class="d-flex">
-  <aside class="d-flex flex-column bg-warning shadow-sm p-3" style="width: 240px; min-height: 100vh;">
-    <!-- Logo -->
-    <a href="{{ url('/') }}" class="d-flex align-items-center mb-4 text-dark text-decoration-none">
-      <img src="{{ asset('images/logo.png') }}" alt="Logo" width="36" height="36" class="me-2">
-      <span class="fs-5 fw-bold">Eloquéncia</span>
-    </a>
+  <!-- Sidebar -->
+  <aside class="d-flex flex-column bg-white border-end shadow-sm" style="width: 260px; min-height: 100vh;">
+  <!-- Logo -->
+  <div class="d-flex align-items-center px-3 py-4 border-bottom">
+    <img src="{{ asset('images/logo.png') }}" alt="Logo" width="36" height="36" class="me-2">
+    <span class="fs-5 fw-bold text-dark">Eloquéncia</span>
+  </div>
 
-    <!-- Navigation -->
-    <ul class="nav nav-pills flex-column gap-1">
-      <li class="nav-item">
-        <a href="{{ url('/rejoindre') }}" class="nav-link text-dark d-flex align-items-center">
-          <i class="bi bi-person-plus me-2"></i> Rejoindre
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{{ url('/blog') }}" class="nav-link text-dark d-flex align-items-center">
-          <i class="bi bi-journal-text me-2"></i> Blog
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{{ url('/#partenaire') }}" class="nav-link text-dark d-flex align-items-center">
-          <i class="bi bi-people me-2"></i> Partenaires
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{{ url('/reduction') }}" class="nav-link text-dark d-flex align-items-center">
-          <i class="bi bi-tag me-2"></i> Réduction
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{{ url('/#contact') }}" class="nav-link text-dark d-flex align-items-center">
-          <i class="bi bi-envelope me-2"></i> Contact
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{{ url('/propos') }}" class="nav-link text-dark d-flex align-items-center">
-          <i class="bi bi-info-circle me-2"></i> À propos
-        </a>
-      </li>
+  <!-- Nav -->
+  <ul class="nav nav-pills flex-column mb-auto px-3 py-3">
+    <li class="nav-item mb-2">
+      <a href="{{ url('/lms/lms') }}" class="nav-link text-dark fw-bold border">
+        <i class="bi-house"></i> Accueil
+      </a>
+    </li>
+  @foreach ($chapters as $chapter)
+    <li class="nav-item">
+      <a href="{{ url('/lms/chapitre/' . $chapter->ID) }}" class="nav-link text-dark fw-semibold d-flex align-items-center">
+        <i class="bi bi-book me-2"></i> {{ $chapter->name }}
+      </a>
+    </li>
+  @endforeach
+</ul>
 
-      @auth('member')
-        <li class="nav-item mt-auto">
-          <form method="POST" action="/logout">
-            @csrf
-            <button type="submit" class="btn btn-dark w-100 d-flex justify-content-center align-items-center mt-2">
-              <i class="bi bi-box-arrow-right me-1"></i> Déconnexion
-            </button>
-          </form>
-        </li>
-      @endauth
-    </ul>
-  </aside>
+  @auth('member')
+  <div class="mt-auto px-3 pb-5">
+    <form method="POST" action="/logout">
+      @csrf
+      <button type="submit" class="btn btn-outline-dark w-100 d-flex align-items-center justify-content-center">
+        <i class="bi bi-box-arrow-right me-2"></i> Déconnexion
+      </button>
+    </form>
+  </div>
+  @endauth
+</aside>
 
+  <!-- Contenu principal -->
   <div class="container py-5">
-    <!-- Titre principal -->
     <div class="text-center mb-4">
-        <h1 class="fw-bold">Bienvenue Test Eltchi</h1>
+      <h1 class="fw-bold">Bienvenue @auth('member') {{ Auth::guard('member')->user()->firstname }} @endauth</h1>
     </div>
 
-    <!-- Carte de bienvenue -->
-    <div class="alert alert-warning welcome-card mb-5 p-4">
-        <h5><strong>Bienvenue sur Eloquéncia !</strong></h5>
-        <p class="mb-1">
-            Le <strong>chapitre 1</strong> est en cours de finalisation !
-        </p>
-        <p>
-            Si vous connaissez des personnes compétentes en éloquence,<br>
-            contactez-nous à <a href="mailto:contact@eloquencia.org">contact@eloquencia.org</a><br>
-            Merci !
-        </p>
+    <blockquote class="blockquote text-center text-muted mt-4">
+      <p>"{{ $citation['text'] }}"</p>
+      <footer class="blockquote-footer">{{ $citation['author'] }}</footer>
+    </blockquote>
+
+    <!-- Message d'accueil -->
+    @if(isset($setting->title) && isset($setting->content))
+    <div class="alert alert-warning">
+        <h5><strong>{{ $setting->title }}</strong></h5>
+        <div>{!! html_entity_decode($setting->content) !!}</div>
+    </div>
+    @endif
+
+  <div class="container my-5">
+  <div class="row g-5 align-items-center">
+    
+    <div class="col-md-6 border-end border-2">
+      <iframe 
+        src="https://docs.google.com/forms/d/e/1FAIpQLScZBBZXxCYXq9HF4w6ErpxBCdsdLS882Hrf2Rz3g39OpMhhMw/viewform?embedded=true" 
+        width="100%" height="550" frameborder="0" marginheight="0" marginwidth="0">
+        Chargement…
+      </iframe>
     </div>
 
-    <!-- Bloc Leçon suivante -->
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm welcome-card">
-                <div class="card-header bg-warning text-white text-center fw-semibold fs-5">
-                    Leçon suivante
-                </div>
-                <div class="card-body text-center">
-                    <h5 class="card-title">🎉 Félicitations !</h5>
-                    <p class="card-text">Vous avez terminé toutes les leçons disponibles.</p>
-                </div>
-            </div>
+    <!-- Colonne Carousel -->
+    <div class="col-md-6 text-center">
+      <h3 class="fw-semibold mb-4">📸 Des images de notre dernier événement</h3>
+
+      <div id="eloquenceCarousel" class="carousel slide rounded shadow" data-bs-ride="carousel">
+        <div class="carousel-inner rounded">
+          <div class="carousel-item active">
+            <img src="/images/Eloquencia_groupe.png" class="d-block w-100 img-fluid" alt="Eloquencia groupe">
+          </div>
+          <div class="carousel-item">
+            <img src="/images/marouan_gateau 2.png" class="d-block w-100 img-fluid" alt="Marouan gâteau 2">
+          </div>
+          <div class="carousel-item">
+            <img src="/images/marouan_gateau.png" class="d-block w-100 img-fluid" alt="Marouan gâteau">
+          </div>
         </div>
+
+        <!-- Contrôles flèches -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#eloquenceCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#eloquenceCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
     </div>
+    
+  </div>
+</div>
 
     <footer class="bg-light text-center py-3">
   <div class="container">
@@ -121,5 +145,11 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- AOS JS -->
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
+
 </body>
 </html>

@@ -7,6 +7,7 @@ use App\Http\Controllers\MessagerieController;
 use App\Http\Controllers\ReductionController;
 use App\Http\Controllers\ParametreController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\LessonController;
 use App\Services\Captcha;
 
 
@@ -24,8 +25,8 @@ Route::get('/blog', function () {
     return view('blog');
 });
 
-Route::get('/rejoindre', function () {
-    return view('rejoindre');
+Route::get('/nos_services', function () {
+    return view('nos_services');
 });
 
 Route::get('/propos', function () {
@@ -59,10 +60,6 @@ Route::get('/admin/members', function () {
 Route::get('/mentions_legales', function () {
     return view('mentions_legales');
 });
-
-Route::get('/lms/lms', function () {
-    return view('lms.lms');
-})->middleware('auth:member');
 
 Route::get('/login', function () {
     return view('admin.login');
@@ -119,6 +116,12 @@ Route::get('/', [ParametreController::class, 'index_welcome']);
 
 Route::get('/blog', [BlogController::class, 'index_blog']);
 Route::get('/article/{id}', [BlogController::class, 'article'])->name('article.show');
+
+Route::get('/lms/lms', [LessonController::class, 'index'])->middleware('auth:member');
+Route::get('/lms/chapitre/{id}', [LessonController::class, 'chapitre'])->middleware('auth:member');
+Route::post('/ajouter_lesson', [LessonController::class, 'ajouter_lesson'])->name('add_lesson')->middleware('auth:admin');
+Route::get('/lecon/{id}', [LessonController::class, 'show'])->name('lecon.afficher');
+
 
 // ROUTES POUR LE SYSTEME DE CAPTCHA
 

@@ -33,7 +33,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('login_admin_attempt') }}">
+            <form method="POST" action="{{ route('login_admin_attempt') }}" autocomplete="off">
                 @csrf
 
                 <div class="mb-3">
