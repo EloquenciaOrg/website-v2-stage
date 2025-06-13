@@ -188,5 +188,26 @@
 
     </div>
   </section>
+    <div class="modal fade" id="helloassoModal" tabindex="-1" aria-labelledby="helloassoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="helloassoModalLabel">Redirection externe</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+
+                <div class="modal-body">
+                    Vous allez être redirigé vers le site de HelloAsso pour finaliser votre adhésion.
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <a href="https://www.helloasso.com/associations/eloquencia/adhesion" target="_blank" class="btn btn-warning">Continuer</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
 @endsection
